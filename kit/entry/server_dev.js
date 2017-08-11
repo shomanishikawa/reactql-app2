@@ -30,6 +30,7 @@ const PORT = getPort();
 // Get manifest values
 const css = '/assets/css/style.css';
 const scripts = [
+  'bootstrap.js',
   'vendor.js',
   'browser.js'].map(key => `/${key}`);
 

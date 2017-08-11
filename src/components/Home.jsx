@@ -1,27 +1,14 @@
 import React from 'react';
 import universal from 'react-universal-component'
 
-const UniversalComponent = universal((props) => {
-  console.log(props.page);
-  return import(`./${props.page}`)
-});
-
+const UniversalComponent = universal(props => import(`./Hero`));
 
 class Home extends React.Component {
-
   render() {
     return (
       <div>
-
-        <div>
-          <h1>You&apos;re on the home page - click another link above</h1>
-
-          <UniversalComponent page={'Hero'} />
-        </div>
-
-
+      <UniversalComponent page={'Hero'} />
       </div>
-
     );
   }
 }

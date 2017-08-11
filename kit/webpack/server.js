@@ -86,6 +86,8 @@ export default new WebpackConfig().extend({
             'syntax-dynamic-import',
             'transform-class-properties',
             'transform-decorators-legacy',
+            'universal-import',
+            'dynamic-import-webpack',
           ],
         },
       },
@@ -95,6 +97,10 @@ export default new WebpackConfig().extend({
     new webpack.DefinePlugin({
       // We're running on the Node.js server, so set `SERVER` to true
       SERVER: true,
+    }),
+
+    new webpack.optimize.LimitChunkCountPlugin({
+      maxChunks: 1
     }),
   ],
   // No need to transpile `node_modules` files, since they'll obviously

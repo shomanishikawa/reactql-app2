@@ -14,8 +14,8 @@
     "clean": "rimraf dist",
     "lint": "eslint .",
     "server": "node dist/server",
-    "server-dev": "cross-env NODE_ENV=development WEBPACK_CONFIG=server_dev webpack --colors",
     "start": "run-p browser server-dev",
+    "server-dev": "cross-env NODE_ENV=development WEBPACK_CONFIG=server_dev webpack --colors --display-chunks --verbose --display-error-details=true",
     "static": "serve -s dist/public",
     "test": "jest"
   },

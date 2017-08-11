@@ -72,6 +72,7 @@ export default new WebpackConfig().extend('[root]/base.js').merge({
                 'transform-regenerator',
                 'transform-class-properties',
                 'transform-decorators-legacy',
+                'universal-import'
               ],
             },
           },
@@ -89,6 +90,12 @@ export default new WebpackConfig().extend('[root]/base.js').merge({
          // this assumes your vendor imports exist in the node_modules directory
          module.context && module.context.indexOf('node_modules') !== -1
       ),
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['bootstrap'], // needed to put webpack bootstrap code before chunks
+      filename: '[name].js',
+      minChunks: Infinity
     }),
 
     // Create a `SERVER` constant that's false in the browser-- we'll use this to
