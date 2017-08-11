@@ -76,6 +76,8 @@
     "zopfli-webpack-plugin": "^0.1.0"
   },
   "dependencies": {
+    "babel-plugin-dynamic-import-webpack": "^1.0.1",
+    "babel-plugin-universal-import": "^1.2.5",
     "boxen": "^1.2.1",
     "chalk": "^2.0.1",
     "ip": "^1.1.5",
@@ -94,10 +96,12 @@
     "react-redux": "^5.0.5",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
+    "react-universal-component": "^2.3.2",
     "redux": "^3.7.1",
     "redux-thunk": "^2.2.0",
     "regenerator-runtime": "^0.10.5",
-    "seamless-immutable": "^7.1.2"
+    "seamless-immutable": "^7.1.2",
+    "webpack-flush-chunks": "^1.1.18"
   },
   "engines": {
     "node": ">=7",

@@ -41,12 +41,10 @@ import less from './styles.less';
 // available as a string relative to [root]/dist/assets/img/
 import logo from './reactql-logo.svg';
 
+import Home from './components/Home';
 // ----------------------
 
 // We'll display this <Home> component when we're on the / route
-const Home = () => (
-  <h1>You&apos;re on the home page - click another link above</h1>
-);
 
 // Helper component that will be conditionally shown when the route matches.
 // This gives you an idea how React Router v4 works
