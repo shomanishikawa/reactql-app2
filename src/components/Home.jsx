@@ -1,7 +1,7 @@
 import React from 'react';
 import universal from 'react-universal-component'
 
-const UniversalComponent = universal(props => import(`./Hero`));
+const UniversalComponent = universal(props => import(`./${props.page}`));
 
 class Home extends React.Component {
   render() {
