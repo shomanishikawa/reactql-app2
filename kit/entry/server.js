@@ -72,6 +72,11 @@ import App from 'src/app';
 // so we can serve static files
 import PATHS from 'config/paths';
 
+
+import stats from 'dist/dev/stats.json';
+import { flushChunkNames, flushModuleIds } from 'react-universal-component/server'
+import flushChunks from 'webpack-flush-chunks'
+import path from 'path'
 // ----------------------
 
 // Static file middleware
@@ -124,6 +129,8 @@ export function createReactHandler(css = [], scripts = [], chunkManifest = {}) {
 
     // Full React HTML render
     const html = ReactDOMServer.renderToString(components);
+
+    console.log(flushChunkNames());
 
     // Handle redirects
     if ([301, 302].includes(routeContext.status)) {

@@ -108,7 +108,7 @@ export default new WebpackConfig().extend({
   externals: nodeModules({
     whitelist: [
       'react-universal-component',
-      'webpack-flush-chunks'
+      'webpack-flush-chunks',
       'react-dom/server'
     ]
   }),

@@ -7,7 +7,7 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-      <UniversalComponent page={'Hero'} />
+        <UniversalComponent page={'Hero'} />
       </div>
     );
   }
