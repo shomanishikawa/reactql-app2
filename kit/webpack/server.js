@@ -105,5 +105,11 @@ export default new WebpackConfig().extend({
   ],
   // No need to transpile `node_modules` files, since they'll obviously
   // still be available to Node.js when we run the resulting `server.js` entry
-  externals: nodeModules(),
+  externals: nodeModules({
+    whitelist: [
+      'react-universal-component',
+      'webpack-flush-chunks'
+      'react-dom/server'
+    ]
+  }),
 });
