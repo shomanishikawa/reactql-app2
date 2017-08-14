@@ -17,7 +17,7 @@ const Html = ({ head, html, scripts, window, css, cssHash, stylesheets }) => (
       <meta httpEquiv="Content-Language" content="en" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       {head.meta.toComponent()}
-      <link rel="stylesheet" href={css} />
+      {stylesheets.map(src => <link rel="stylesheet" key={src} href={src} />)}
       {head.title.toComponent()}
     </head>
     <body>

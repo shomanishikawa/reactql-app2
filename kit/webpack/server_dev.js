@@ -30,6 +30,8 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { css } from './common';
 import PATHS from '../../config/paths';
 
+import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
+
 // ----------------------
 
 // Simple Webpack plugin for (re)spawning the development server after
@@ -88,7 +90,8 @@ export default [
     module: {
       rules: [
         // CSS loaders
-        ...css.getExtractCSSLoaders(extractCSS, true /* sourceMaps = true */),
+        // ...css.getExtractCSSLoaders(extractCSS, true /* sourceMaps = true */),
+        ...css.getExtractCSSLoaders(ExtractCssChunks, true /* sourceMaps = true */),
       ],
     },
     plugins: [
@@ -96,7 +99,8 @@ export default [
       new webpack.NoEmitOnErrorsPlugin(),
 
       // Fire up CSS extraction
-      extractCSS,
+      // extractCSS,
+      new ExtractCssChunks,
 
       // Copy files from `PATHS.static` to `dist/dev`.  No transformations
       // will be performed on the files-- they'll be copied as-is

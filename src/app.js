@@ -32,10 +32,8 @@ import { NotFound, Redirect } from 'kit/lib/routing';
 import allMessages from 'src/queries/all_messages.gql';
 
 // Styles
-import './styles.global.css';
+// import './styles.global.css';
 import css from './styles.css';
-import sass from './styles.scss';
-import less from './styles.less';
 
 // Get the ReactQL logo.  This is a local .svg file, which will be made
 // available as a string relative to [root]/dist/assets/img/
@@ -119,8 +117,6 @@ class GraphQLMessage extends React.PureComponent {
 const Styles = () => (
   <ul className={css.styleExamples}>
     <li className={css.example}>Styled by CSS</li>
-    <li className={sass.example}>Styled by SASS</li>
-    <li className={less.example}>Styled by LESS</li>
   </ul>
 );
 

@@ -56,6 +56,8 @@ import PATHS from '../../config/paths';
 // Project configuration to control build settings
 import { BUNDLE_ANALYZER } from '../../config/project';
 
+import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
+
 // ----------------------
 
 // The final CSS file will wind up in `dist/public/assets/css/style.[contenthash].css`
@@ -88,6 +90,7 @@ export default new WebpackConfig().extend({
     rules: [
       // CSS loaders
       ...css.getExtractCSSLoaders(extractCSS),
+      // ...css.getExtractCSSLoaders(ExtractCssChunks),
     ],
   },
   // Minify, optimise
@@ -136,6 +139,7 @@ export default new WebpackConfig().extend({
 
     // Fire up CSS extraction
     extractCSS,
+    // new ExtractCssChunks,
 
     // Extract webpack bootstrap logic into a separate file
     new webpack.optimize.CommonsChunkPlugin({

@@ -74,8 +74,9 @@ import PATHS from 'config/paths';
 
 
 import stats from 'dist/dev/stats.json';
-import { flushChunkNames, flushModuleIds } from 'react-universal-component/server'
-import flushChunks from 'webpack-flush-chunks'
+// import stats from 'dist/public/stats.json';
+import { flushChunkNames, flushModuleIds } from 'react-universal-component/server';
+import flushChunks from 'webpack-flush-chunks';
 const thePath = stats.publicPath;
 // ----------------------
 

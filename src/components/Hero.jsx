@@ -1,10 +1,11 @@
 import React from 'react';
+import styles from './Hero.css';
 
 class Hero extends React.Component {
 
   render() {
     return(
-      <div className="hero">
+      <div className={styles.container}>
         <h1>HERO</h1>
       </div>
     )
@@ -12,5 +13,4 @@ class Hero extends React.Component {
 };
 
 export default Hero
-
 
