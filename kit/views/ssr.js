@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 // ----------------------
 
-const Html = ({ head, html, scripts, window, css }) => (
+const Html = ({ head, html, scripts, window, css, cssHash, stylesheets }) => (
   <html lang="en" prefix="og: http://ogp.me/ns#">
     <head>
       <meta charSet="utf-8" />
@@ -30,6 +30,8 @@ const Html = ({ head, html, scripts, window, css }) => (
             (out, key) => out += `window.${key}=${JSON.stringify(window[key])};`,
           ''),
         }} />
+      {scripts.map(src => <script key={src} src={src} />)}
+      <div dangerouslySetInnerHTML={{ __html: cssHash }}></div>
       {scripts.map(src => <script key={src} src={src} />)}
     </body>
   </html>

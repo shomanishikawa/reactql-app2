@@ -7,13 +7,24 @@
 import webpack from 'webpack';
 import WebpackConfig from 'webpack-config';
 
-// Plugin to allow us to exclude `node_modules` packages from the final
-// bundle.  Since we'll be running `server.js` from Node, we'll have access
-// to those modules locally and they don't need to wind up in the bundle file
-import nodeModules from 'webpack-node-externals';
-
 /* Local */
 import { css } from './common';
+
+// Filesystem utilities to build up externals
+import fs from 'fs'
+import path from 'path';
+
+// Creating externals, and whitelisted packages to include
+const res = p => path.resolve(__dirname, p);
+const nodeModules = res('../../node_modules');
+const externals = fs
+  .readdirSync(nodeModules)
+  .filter(x => !/\.bin|react-universal-component|extract-css-chunks-webpack-plugin|webpack-flush-chunks/.test(x))
+  .reduce((externals, mod) => {
+    externals[mod] = `commonjs ${mod}`
+    return externals
+  }, {});
+externals['react-dom/server'] = 'commonjs react-dom/server';
 
 // ----------------------
 
@@ -87,7 +98,6 @@ export default new WebpackConfig().extend({
             'transform-class-properties',
             'transform-decorators-legacy',
             'universal-import',
-            'dynamic-import-webpack',
           ],
         },
       },
@@ -105,11 +115,5 @@ export default new WebpackConfig().extend({
   ],
   // No need to transpile `node_modules` files, since they'll obviously
   // still be available to Node.js when we run the resulting `server.js` entry
-  externals: nodeModules({
-    whitelist: [
-      'react-universal-component',
-      'webpack-flush-chunks',
-      'react-dom/server'
-    ]
-  }),
+  externals
 });

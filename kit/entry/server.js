@@ -76,7 +76,7 @@ import PATHS from 'config/paths';
 import stats from 'dist/dev/stats.json';
 import { flushChunkNames, flushModuleIds } from 'react-universal-component/server'
 import flushChunks from 'webpack-flush-chunks'
-import path from 'path'
+const thePath = stats.publicPath;
 // ----------------------
 
 // Static file middleware
@@ -130,7 +130,21 @@ export function createReactHandler(css = [], scripts = [], chunkManifest = {}) {
     // Full React HTML render
     const html = ReactDOMServer.renderToString(components);
 
-    console.log(flushChunkNames());
+    // Flush chunks to get dynamic bundles
+    let { scripts, stylesheets, cssHash } = flushChunks(stats, {
+      chunkNames: flushChunkNames()
+    });
+
+    // Push main js file
+    scripts.push('browser.js');
+    scripts = scripts
+              .map(f => `${thePath}${f}`);
+    console.log('scripts', scripts);
+
+    stylesheets.push('browser.css');
+    stylesheets = stylesheets
+              .map(f => `${thePath}${f}`);
+    console.log('stylesheets', stylesheets);
 
     // Handle redirects
     if ([301, 302].includes(routeContext.status)) {
@@ -164,6 +178,8 @@ export function createReactHandler(css = [], scripts = [], chunkManifest = {}) {
           __STATE__: store.getState(),
         }}
         css={css}
+        cssHash={cssHash}
+        stylesheets={stylesheets}
         scripts={scripts} />,
     )}`;
   };
