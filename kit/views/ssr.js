@@ -30,7 +30,6 @@ const Html = ({ head, html, scripts, window, css, cssHash, stylesheets }) => (
             (out, key) => out += `window.${key}=${JSON.stringify(window[key])};`,
           ''),
         }} />
-      {scripts.map(src => <script key={src} src={src} />)}
       <div dangerouslySetInnerHTML={{ __html: cssHash }}></div>
       {scripts.map(src => <script key={src} src={src} />)}
     </body>
