@@ -15,7 +15,6 @@ import chalk from 'chalk';
 
 /* Local */
 
-
 // Import console messages
 import { css, stats } from './common';
 import { logServerStarted } from '../lib/console';

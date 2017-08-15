@@ -46,9 +46,10 @@ export const css = {
     minimize: false,
 
     // Format for 'localised' CSS modules
-    // localIdentName: '[local]-[hash:base64]',
+    localIdentName: '[name]__[local]--[hash:base64:5]',
+
+    // For dynamic loading
     modules: true,
-    localIdentName: '[name]__[local]--[hash:base64:5]'
 
     // Retain the loader pipeline
     // importLoaders: 1,
@@ -93,6 +94,7 @@ export const css = {
     }());
   },
 
+  // @TODO figure out scss compilation
   getExtractCSSLoaders(extractCSS, sourceMap = false) {
     return (function* loadCss() {
       yield {
@@ -116,6 +118,7 @@ export const css = {
         })
       }
     }());
+
     // return (function* loadCss() {
     //   for (const loader of css.rules) {
     //     // Iterate over CSS/SASS/LESS and yield local and global mod configs

@@ -18,7 +18,9 @@ import WebpackConfig from 'webpack-config';
 // Our local path configuration, so webpack knows where everything is/goes
 import PATHS from '../../config/paths';
 
+// Generates stats from build, used for dynamic loading
 import StatsPlugin from 'stats-webpack-plugin';
+
 // ----------------------
 
 // Extend the 'base' config
@@ -93,12 +95,14 @@ export default new WebpackConfig().extend('[root]/base.js').merge({
       ),
     }),
 
+    // Used to create a bootstrap module
     new webpack.optimize.CommonsChunkPlugin({
       names: ['bootstrap'], // needed to put webpack bootstrap code before chunks
       filename: '[name].js',
       minChunks: Infinity
     }),
 
+    // Create stats
     new StatsPlugin('stats.json'),
 
     // Create a `SERVER` constant that's false in the browser-- we'll use this to

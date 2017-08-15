@@ -24,13 +24,13 @@ const Html = ({ head, html, scripts, window, css, cssHash, stylesheets }) => (
       <div
         id="main"
         dangerouslySetInnerHTML={{ __html: html }} />
+      <script dangerouslySetInnerHTML={{ __html: 'window.__CSS_CHUNKS__ =' + cssHash }}></script>
       <script
         dangerouslySetInnerHTML={{
           __html: Object.keys(window).reduce(
             (out, key) => out += `window.${key}=${JSON.stringify(window[key])};`,
           ''),
         }} />
-      <div dangerouslySetInnerHTML={{ __html: cssHash }}></div>
       {scripts.map(src => <script key={src} src={src} />)}
     </body>
   </html>

@@ -138,16 +138,16 @@ export function createReactHandler(css = [], scripts = [], chunkManifest = {}) {
     const thePath = stats.publicPath;
 
     // Flush chunks to get dynamic bundles
-    let { scripts, stylesheets, cssHash } = flushChunks(stats, {
-      chunkNames: flushChunkNames()
+    let { scripts, stylesheets, cssHashRaw } = flushChunks(stats, {
+      chunkNames: flushChunkNames(),
+      before: ['bootstrap', 'vendor'],
+      after: ['browser']
     });
 
     // Add browser chunk, and construct scripts
-    scripts.push(stats.assetsByChunkName.browser[0]);
     scripts = scripts.map(f => `${thePath}${f}`);
 
     // Add browser chunk, and construct styles
-    stylesheets.push(stats.assetsByChunkName.browser[1]);
     stylesheets = stylesheets.map(f => `${thePath}${f}`);
 
     // Handle redirects
@@ -182,7 +182,7 @@ export function createReactHandler(css = [], scripts = [], chunkManifest = {}) {
           __STATE__: store.getState(),
         }}
         css={css}
-        cssHash={cssHash}
+        cssHash={JSON.stringify(cssHashRaw)}
         stylesheets={stylesheets}
         scripts={scripts} />,
     )}`;
