@@ -14,7 +14,7 @@ import { css } from './common';
 import fs from 'fs'
 import path from 'path';
 
-// Creating externals, and whitelisted packages to include
+// Creating externals, and whitelisted packages to include in bundle.
 const res = p => path.resolve(__dirname, p);
 const nodeModules = res('../../node_modules');
 const externals = fs
@@ -109,6 +109,7 @@ export default new WebpackConfig().extend({
       SERVER: true,
     }),
 
+    // Limiting chunk count for dynamic loading
     new webpack.optimize.LimitChunkCountPlugin({
       maxChunks: 1
     }),

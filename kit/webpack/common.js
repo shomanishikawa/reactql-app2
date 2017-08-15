@@ -46,10 +46,13 @@ export const css = {
     minimize: false,
 
     // Format for 'localised' CSS modules
-    localIdentName: '[local]-[hash:base64]',
+    localIdentName: '[name]__[local]--[hash:base64:5]',
+
+    // For dynamic loading
+    modules: true,
 
     // Retain the loader pipeline
-    importLoaders: 1,
+    // importLoaders: 1,
   },
 
   // Return an array containing the module RegExp and css-loader config,
@@ -91,35 +94,59 @@ export const css = {
     }());
   },
 
+  // @TODO figure out scss compilation
   getExtractCSSLoaders(extractCSS, sourceMap = false) {
     return (function* loadCss() {
-      for (const loader of css.rules) {
-        // Iterate over CSS/SASS/LESS and yield local and global mod configs
-        for (const mod of css.getModuleRegExp(loader.ext)) {
-          yield {
-            test: new RegExp(mod[0]),
-            loader: extractCSS.extract({
-              use: [
-                {
-                  loader: 'css-loader',
-                  query: Object.assign({}, css.loaderDefaults, {
-                    sourceMap,
-                  }, mod[1]),
-                },
-                {
-                  loader: 'postcss-loader',
-                  options: {
-                    sourceMap,
-                  },
-                },
-                ...loader.use,
-              ],
-              fallback: 'style-loader',
-            }),
-          };
-        }
+      yield {
+        test: /\.css$/,
+        use: extractCSS.extract({
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                modules: true,
+                localIdentName: '[name]__[local]--[hash:base64:5]'
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap,
+              },
+            },
+          ]
+        })
       }
     }());
+
+    // return (function* loadCss() {
+    //   for (const loader of css.rules) {
+    //     // Iterate over CSS/SASS/LESS and yield local and global mod configs
+    //     for (const mod of css.getModuleRegExp(loader.ext)) {
+    //       yield {
+    //         test: new RegExp(mod[0]),
+    //         loader: extractCSS.extract({
+    //           use: [
+    //             {
+    //               loader: 'css-loader',
+    //               query: Object.assign({}, css.loaderDefaults, {
+    //                 sourceMap,
+    //               }, mod[1]),
+    //             },
+    //             {
+    //               loader: 'postcss-loader',
+    //               options: {
+    //                 sourceMap,
+    //               },
+    //             },
+    //             ...loader.use,
+    //           ],
+    //           fallback: 'style-loader',
+    //         }),
+    //       };
+    //     }
+    //   }
+    // }());
   },
 };
 

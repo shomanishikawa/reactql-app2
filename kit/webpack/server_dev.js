@@ -21,7 +21,7 @@ import WebpackConfig from 'webpack-config';
 // In dev, we inlined stylesheets inside our JS bundles.  Now that we're
 // building for production, we'll extract them out into a separate .css file
 // that can be called from our final HTML.  This plugin does the heavy lifting
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+// import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 // Copy files from `PATH.static` to `PATHS.distDev`
 import CopyWebpackPlugin from 'copy-webpack-plugin';
@@ -29,6 +29,9 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 /* Local */
 import { css } from './common';
 import PATHS from '../../config/paths';
+
+// Extract css chunks for dynamic loading. Replaces extract-text-webpack-plugin
+import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 
 // ----------------------
 
@@ -44,11 +47,6 @@ class ServerDevPlugin {
     });
   }
 }
-
-const extractCSS = new ExtractTextPlugin({
-  filename: 'assets/css/style.css',
-  allChunks: true,
-});
 
 export default [
   // Server bundle
@@ -88,7 +86,7 @@ export default [
     module: {
       rules: [
         // CSS loaders
-        ...css.getExtractCSSLoaders(extractCSS, true /* sourceMaps = true */),
+        ...css.getExtractCSSLoaders(ExtractCssChunks, true /* sourceMaps = true */),
       ],
     },
     plugins: [
@@ -96,7 +94,7 @@ export default [
       new webpack.NoEmitOnErrorsPlugin(),
 
       // Fire up CSS extraction
-      extractCSS,
+      new ExtractCssChunks,
 
       // Copy files from `PATHS.static` to `dist/dev`.  No transformations
       // will be performed on the files-- they'll be copied as-is

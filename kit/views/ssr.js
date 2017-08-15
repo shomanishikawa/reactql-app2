@@ -17,20 +17,20 @@ const Html = ({ head, html, scripts, window, css, cssHash, stylesheets }) => (
       <meta httpEquiv="Content-Language" content="en" />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       {head.meta.toComponent()}
-      <link rel="stylesheet" href={css} />
+      {stylesheets.map(src => <link rel="stylesheet" key={src} href={src} />)}
       {head.title.toComponent()}
     </head>
     <body>
       <div
         id="main"
         dangerouslySetInnerHTML={{ __html: html }} />
+      <script dangerouslySetInnerHTML={{ __html: 'window.__CSS_CHUNKS__ =' + cssHash }}></script>
       <script
         dangerouslySetInnerHTML={{
           __html: Object.keys(window).reduce(
             (out, key) => out += `window.${key}=${JSON.stringify(window[key])};`,
           ''),
         }} />
-      <div dangerouslySetInnerHTML={{ __html: cssHash }}></div>
       {scripts.map(src => <script key={src} src={src} />)}
     </body>
   </html>
