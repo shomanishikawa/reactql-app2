@@ -11,6 +11,7 @@
 
 import { join } from 'path';
 
+import StatsPlugin from 'stats-webpack-plugin';
 /* NPM */
 
 import webpack from 'webpack';
@@ -56,16 +57,10 @@ import PATHS from '../../config/paths';
 // Project configuration to control build settings
 import { BUNDLE_ANALYZER } from '../../config/project';
 
+// Used to extract css chunks, replaces extract-text-webpack-plugin
 import ExtractCssChunks from 'extract-css-chunks-webpack-plugin';
 
 // ----------------------
-
-// The final CSS file will wind up in `dist/public/assets/css/style.[contenthash].css`
-
-const extractCSS = new ExtractTextPlugin({
-  filename: 'assets/css/style.[contenthash].css',
-  allChunks: true,
-});
 
 // Extend the `browser.js` config
 export default new WebpackConfig().extend({
@@ -78,6 +73,9 @@ export default new WebpackConfig().extend({
         options: {},
       });
 
+    // Removing plugins defined in browser.js, as they break dynamic bundling
+    delete config.plugins;
+
     return config;
   },
 }).merge({
@@ -88,9 +86,7 @@ export default new WebpackConfig().extend({
   },
   module: {
     rules: [
-      // CSS loaders
-      ...css.getExtractCSSLoaders(extractCSS),
-      // ...css.getExtractCSSLoaders(ExtractCssChunks),
+      ...css.getExtractCSSLoaders(ExtractCssChunks),
     ],
   },
   // Minify, optimise
@@ -138,8 +134,7 @@ export default new WebpackConfig().extend({
     }),
 
     // Fire up CSS extraction
-    extractCSS,
-    // new ExtractCssChunks,
+    new ExtractCssChunks,
 
     // Extract webpack bootstrap logic into a separate file
     new webpack.optimize.CommonsChunkPlugin({
@@ -186,5 +181,30 @@ export default new WebpackConfig().extend({
         force: true, // This flag forces overwrites between versions
       },
     ]),
+
+    // Vendor chunk
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: module => (
+         // this assumes your vendor imports exist in the node_modules directory
+         module.context && module.context.indexOf('node_modules') !== -1
+      ),
+    }),
+
+    // Commons bootstrap chunk
+    new webpack.optimize.CommonsChunkPlugin({
+      names: ['bootstrap'], // needed to put webpack bootstrap code before chunks
+      filename: '[name].js',
+      minChunks: Infinity
+    }),
+
+    new StatsPlugin('stats.json'),
+
+    // Create a `SERVER` constant that's false in the browser-- we'll use this to
+    // determine whether we're running on a Node server and set this to true
+    // in the server.js config
+    new webpack.DefinePlugin({
+      SERVER: false,
+    }),
   ],
 });

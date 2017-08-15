@@ -72,12 +72,14 @@ import App from 'src/app';
 // so we can serve static files
 import PATHS from 'config/paths';
 
+// Our stats directory is different for dev and prod
+import devStats from 'dist/dev/stats.json';
+import prodStats from 'dist/public/stats.json';
 
-import stats from 'dist/dev/stats.json';
-// import stats from 'dist/public/stats.json';
+// Utilities for dynamic loading with webpack-flush-chunks
 import { flushChunkNames, flushModuleIds } from 'react-universal-component/server';
 import flushChunks from 'webpack-flush-chunks';
-const thePath = stats.publicPath;
+
 // ----------------------
 
 // Static file middleware
@@ -131,21 +133,22 @@ export function createReactHandler(css = [], scripts = [], chunkManifest = {}) {
     // Full React HTML render
     const html = ReactDOMServer.renderToString(components);
 
+    // Set stats and path based on prod or dev
+    const stats = process.env.NODE_ENV === 'production' ? prodStats : devStats;
+    const thePath = stats.publicPath;
+
     // Flush chunks to get dynamic bundles
     let { scripts, stylesheets, cssHash } = flushChunks(stats, {
       chunkNames: flushChunkNames()
     });
 
-    // Push main js file
-    scripts.push('browser.js');
-    scripts = scripts
-              .map(f => `${thePath}${f}`);
-    console.log('scripts', scripts);
+    // Add browser chunk, and construct scripts
+    scripts.push(stats.assetsByChunkName.browser[0]);
+    scripts = scripts.map(f => `${thePath}${f}`);
 
-    stylesheets.push('browser.css');
-    stylesheets = stylesheets
-              .map(f => `${thePath}${f}`);
-    console.log('stylesheets', stylesheets);
+    // Add browser chunk, and construct styles
+    stylesheets.push(stats.assetsByChunkName.browser[1]);
+    stylesheets = stylesheets.map(f => `${thePath}${f}`);
 
     // Handle redirects
     if ([301, 302].includes(routeContext.status)) {

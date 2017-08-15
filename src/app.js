@@ -32,7 +32,7 @@ import { NotFound, Redirect } from 'kit/lib/routing';
 import allMessages from 'src/queries/all_messages.gql';
 
 // Styles
-// import './styles.global.css';
+import './styles.global.css';
 import css from './styles.css';
 
 // Get the ReactQL logo.  This is a local .svg file, which will be made
