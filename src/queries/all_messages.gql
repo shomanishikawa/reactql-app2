@@ -1,7 +1,3 @@
-#import "./message.gql"
-
 query AllMessages {
-  allMessages(first:1) {
-    ...Message
-  }
+  messages
 }

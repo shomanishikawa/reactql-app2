@@ -1,16 +1,15 @@
 import React from 'react';
 import styles from './Hero.css';
+import { graphql } from 'react-apollo';
 
-class Hero extends React.Component {
+import allMessages from 'src/queries/all_messages.gql';
 
-  render() {
-    return(
-      <div className={styles.container}>
-        <h1>HERO</h1>
-      </div>
-    )
-  }
-};
+const Hero = ({data}) => (
+  <div className={styles.container}>
+    <h1>HERO</h1>
+    <div>{data.messages && data.messages[0]}</div>
+  </div>
+);
 
-export default Hero
+export default graphql(allMessages)(Hero);
 

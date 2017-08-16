@@ -28,9 +28,6 @@ import Helmet from 'react-helmet';
 // NotFound 404 handler for unknown routes
 import { NotFound, Redirect } from 'kit/lib/routing';
 
-// GraphQL queries
-import allMessages from 'src/queries/all_messages.gql';
-
 // Styles
 import './styles.global.css';
 import css from './styles.css';
@@ -39,7 +36,7 @@ import css from './styles.css';
 // available as a string relative to [root]/dist/assets/img/
 import logo from './reactql-logo.svg';
 
-import Home from './components/Home';
+import Home from './Home';
 // ----------------------
 
 // We'll display this <Home> component when we're on the / route
@@ -83,36 +80,6 @@ const Stats = () => {
   );
 };
 
-// Now, let's create a GraphQL-enabled component...
-
-// ... then, let's create the component and decorate it with the `graphql`
-// HOC that will automatically populate `this.props` with the query data
-// once the GraphQL API request has been completed
-@graphql(allMessages)
-class GraphQLMessage extends React.PureComponent {
-  static propTypes = {
-    data: PropTypes.shape({
-      allMessages: PropTypes.arrayOf(
-        PropTypes.shape({
-          text: PropTypes.string.isRequired,
-        }),
-      ),
-    }),
-  }
-
-  render() {
-    const { data } = this.props;
-    const message = data.allMessages && data.allMessages[0].text;
-    const isLoading = data.loading ? 'yes' : 'nope';
-    return (
-      <div>
-        <h2>Message from GraphQL server: <em>{message}</em></h2>
-        <h2>Currently loading?: {isLoading}</h2>
-      </div>
-    );
-  }
-}
-
 // Example of CSS, SASS and LESS styles being used together
 const Styles = () => (
   <ul className={css.styleExamples}>
@@ -152,6 +119,9 @@ class ReduxCounter extends React.PureComponent {
 // Export a simple component that allows clicking on list items to change
 // the route, along with a <Route> 'listener' that will conditionally display
 // the <Page> component based on the route name
+//
+// @TODO reconcile nid here
+// @graphql(getNid)
 export default () => (
   <div>
     <Helmet
@@ -164,20 +134,14 @@ export default () => (
       <img src={logo} alt="ReactQL" className={css.logo} />
     </div>
     <hr />
-    <GraphQLMessage />
-    <hr />
     <ul>
       <li><Link to="/">Home</Link></li>
       <li><Link to="/page/about">About</Link></li>
       <li><Link to="/page/contact">Contact</Link></li>
-      <li><Link to="/old/path">Redirect from /old/path &#8594; /new/path</Link></li>
     </ul>
     <hr />
     <Switch>
       <Route exact path="/" component={Home} />
-      <Route path="/page/:name" component={Page} />
-      <Redirect from="/old/path" to="/new/path" />
-      <Route component={WhenNotFound} />
     </Switch>
     <hr />
     <ReduxCounter />

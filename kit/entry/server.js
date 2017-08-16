@@ -135,7 +135,6 @@ export function createReactHandler(css = [], scripts = [], chunkManifest = {}) {
 
     // Set stats and path based on prod or dev
     const stats = process.env.NODE_ENV === 'production' ? prodStats : devStats;
-    const thePath = stats.publicPath;
 
     // Flush chunks to get dynamic bundles
     let { scripts, stylesheets, cssHashRaw } = flushChunks(stats, {
@@ -145,10 +144,10 @@ export function createReactHandler(css = [], scripts = [], chunkManifest = {}) {
     });
 
     // Add browser chunk, and construct scripts
-    scripts = scripts.map(f => `${thePath}${f}`);
+    scripts = scripts.map(f => `${stats.publicPath}${f}`);
 
     // Add browser chunk, and construct styles
-    stylesheets = stylesheets.map(f => `${thePath}${f}`);
+    stylesheets = stylesheets.map(f => `${stats.publicPath}${f}`);
 
     // Handle redirects
     if ([301, 302].includes(routeContext.status)) {
@@ -180,9 +179,9 @@ export function createReactHandler(css = [], scripts = [], chunkManifest = {}) {
         window={{
           webpackManifest: chunkManifest,
           __STATE__: store.getState(),
+          __CSS_CHUNKS__: cssHashRaw
         }}
         css={css}
-        cssHash={JSON.stringify(cssHashRaw)}
         stylesheets={stylesheets}
         scripts={scripts} />,
     )}`;

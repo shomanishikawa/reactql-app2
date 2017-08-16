@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 
 // ----------------------
 
-const Html = ({ head, html, scripts, window, css, cssHash, stylesheets }) => (
+const Html = ({ head, html, scripts, window, css, stylesheets }) => (
   <html lang="en" prefix="og: http://ogp.me/ns#">
     <head>
       <meta charSet="utf-8" />
@@ -24,7 +24,6 @@ const Html = ({ head, html, scripts, window, css, cssHash, stylesheets }) => (
       <div
         id="main"
         dangerouslySetInnerHTML={{ __html: html }} />
-      <script dangerouslySetInnerHTML={{ __html: 'window.__CSS_CHUNKS__ =' + cssHash }}></script>
       <script
         dangerouslySetInnerHTML={{
           __html: Object.keys(window).reduce(
